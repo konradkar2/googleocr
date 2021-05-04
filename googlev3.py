@@ -13,7 +13,7 @@ IMAGES_PATH = "ocr/images"
 ANNOTATIONS_PATH = "ocr/annotations"
 THRESHOLD = 0.7
 DEBUG = 0
-
+SKIP = 1 #set this to true to ommit getting data for exisitng label
 def getDict(path,debug=0):
     f = open(path, "r")
     Dict = {}
@@ -109,11 +109,16 @@ if __name__ == '__main__':
     arr = os.listdir(IMAGES_PATH)
     total = len(arr)
     i = 0
-    for imgname in arr:        
+    for imgname in arr:             
         imgpath = os.path.join(IMAGES_PATH,imgname)
         pre, ext = os.path.splitext(imgname)
         outputname = pre + ".txt"
-        outputpath = os.path.join(ANNOTATIONS_PATH,outputname)            
+        outputpath = os.path.join(ANNOTATIONS_PATH,outputname)           
+
+        if SKIP:
+            if os.path.isfile(outputpath): 
+                i = i +1
+                continue
        
         annotations = detect_document(imgpath,"text", DICT,THRESHOLD, DEBUG)
         if len(annotations) > 0:
