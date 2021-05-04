@@ -11,7 +11,7 @@ os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credential_path
 
 IMAGES_PATH = "ocr/images"
 ANNOTATIONS_PATH = "ocr/annotations"
-THRESHOLD = 0.9
+THRESHOLD = 0.7
 DEBUG = 0
 
 def getDict(path,debug=0):
@@ -77,6 +77,7 @@ def detect_document(imagepath,outputpath,Dict,threshold, debug =0):
                         ymin = symbol.bounding_box.vertices[0].y
                         ymax = symbol.bounding_box.vertices[2].y
                         b = (xmin,xmax,ymin,ymax)
+                        #print(b)
                         drkn = convert_box_to_darknet_format((width,height),b)
                         sym = symbol.text
                         if sym in Dict.keys() and symbol.confidence > threshold:
