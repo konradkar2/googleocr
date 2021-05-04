@@ -70,13 +70,27 @@ def detect_document(imagepath,outputpath,Dict,threshold, debug =0):
                         if debug:
                             print('\tSymbol: {} (confidence: {})'.format(
                                 symbol.text, symbol.confidence))
-                        xmin = symbol.bounding_box.vertices[0].x
-                        xmax = symbol.bounding_box.vertices[1].x
-                        ymin = symbol.bounding_box.vertices[0].y
-                        ymax = symbol.bounding_box.vertices[2].y
                         
-                        
+                        ymin = 10000
+                        ymax = 0
+                        xmin = 10000
+                        xmax = 0
+                        for v in symbol.bounding_box.vertices:
+                            if v.x < xmin:
+                                xmin = v.x
+                            if v.x > xmax:
+                                xmax = v.x
+                            if v.y < ymin:
+                                ymin = v.y
+                            if v.y > ymax:
+                                ymax = v.y                        
+                        if xmin < 0:
+                            xmin = 0
+                        if ymin < 0:
+                            ymin = 0
+                        #print(xmax,xmin,ymin,ymax)
                         drkn = convert_box_to_darknet_format(width,height,xmin,ymin,xmax,ymax)
+                        #print(drkn)
                         sym = symbol.text
                         if sym in Dict.keys() and symbol.confidence > threshold:
                             result = "{} {} {} {} {} ".format(Dict[sym],*drkn)
