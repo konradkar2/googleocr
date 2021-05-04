@@ -11,6 +11,9 @@ OUTPUT_FOLDER='extract/output'
 LABELS_FILE='data/obj.names'
 CONFIG_FILE='yolov4-tiny-custom.cfg'
 WEIGHTS_FILE='yolov4-tiny-custom_6000.weights'
+
+MIN_WIDTH = 50
+MIN_HEIGHT = 20
 CONFIDENCE_THRESHOLD=0.5
 
 LABELS = open(LABELS_FILE).read().strip().split("\n")
@@ -90,6 +93,8 @@ for imgname in imgnames:
 			# extract the bounding box coordinates
 			(x, y) = (boxes[i][0], boxes[i][1])
 			(w, h) = (boxes[i][2], boxes[i][3])
+			if w < MIN_WIDTH or h < MIN_HEIGHT:
+				continue
 
 			color = (138,43,226)
 			ROI = image[y:y+h, x:x+w]
