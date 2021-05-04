@@ -98,13 +98,17 @@ for imgname in imgnames:
 
 			color = (138,43,226)
 			ROI = image[y:y+h, x:x+w]
+			
 			#cv2.rectangle(image, (x, y), (x + w, y + h), color, 2)
 			#text = "{}: {:.4f}".format(LABELS[classIDs[i]], confidences[i])
 			#cv2.putText(image, text, (x, y - 5), cv2.FONT_HERSHEY_SIMPLEX,
 			#	0.5, color, 2)
 			output_name = pre + "_" + str(i) + ".jpg"
 			output_path = os.path.join(OUTPUT_FOLDER,output_name)
-			cv2.imwrite(output_path,ROI)
+			try:
+				cv2.imwrite(output_path,ROI)
+			except Exception as e:
+				print(e)
 
 	# show the output image
 	#out.write(image)
