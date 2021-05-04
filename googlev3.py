@@ -26,18 +26,16 @@ def getDict(path,debug=0):
         print(Dict)
     return Dict
 
-def convert_box_to_darknet_format(size, box):
-    dw = 1./size[0]
-    dh = 1./size[1]
-    x = (box[0] + box[1])/2.0
-    y = (box[2] + box[3])/2.0
-    w = box[1] - box[0]
-    h = box[3] - box[2]
-    x = x*dw
-    w = w*dw
-    y = y*dh
-    h = h*dh
-    return x,y,w,h
+def convert_box_to_darknet_format(imw,imh,xmin,ymin,xmax,ymax):
+    x = (xmin + xmax)/2
+    x = x/imw
+    y = (ymin + ymax)/2
+    y = y/imh
+
+    h = (ymax-ymin)/imh
+    w = (xmax-xmin)/imw
+    
+    return x, y, w, h
 
 def detect_document(imagepath,outputpath,Dict,threshold, debug =0):
     """Detects document features in an image."""
@@ -76,9 +74,9 @@ def detect_document(imagepath,outputpath,Dict,threshold, debug =0):
                         xmax = symbol.bounding_box.vertices[1].x
                         ymin = symbol.bounding_box.vertices[0].y
                         ymax = symbol.bounding_box.vertices[2].y
-                        b = (xmin,xmax,ymin,ymax)
-                        #print(b)
-                        drkn = convert_box_to_darknet_format((width,height),b)
+                        
+                        
+                        drkn = convert_box_to_darknet_format(width,height,xmin,ymin,xmax,ymax)
                         sym = symbol.text
                         if sym in Dict.keys() and symbol.confidence > threshold:
                             result = "{} {} {} {} {} ".format(Dict[sym],*drkn)
