@@ -94,9 +94,10 @@ def detect_document(imagepath,outputpath,Dict,threshold, debug =0):
 if __name__ == '__main__':
     DICT = getDict("charlabels.txt", DEBUG)
     arr = os.listdir(IMAGES_PATH)
+    total = len(arr)
+    i = 0
     for imgname in arr:        
         imgpath = os.path.join(IMAGES_PATH,imgname)
-        
         pre, ext = os.path.splitext(imgname)
         outputname = pre + ".txt"
         outputpath = os.path.join(ANNOTATIONS_PATH,outputname)            
@@ -108,3 +109,7 @@ if __name__ == '__main__':
             f.close()
         else:
             os.remove(imgpath)
+        progress = str(i) + "/" + str(total)
+        print ("\r Progress {}".format(progress), end="")
+        
+        i = i + 1
