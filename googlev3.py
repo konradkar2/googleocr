@@ -96,7 +96,7 @@ if __name__ == '__main__':
     arr = os.listdir(IMAGES_PATH)
     for imgname in arr:        
         imgpath = os.path.join(IMAGES_PATH,imgname)
-
+        
         pre, ext = os.path.splitext(imgname)
         outputname = pre + ".txt"
         outputpath = os.path.join(ANNOTATIONS_PATH,outputname)            
